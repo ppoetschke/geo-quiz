@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Geo-Quiz">
+<title>Geo-Quiz – Gewässer der Welt</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <div class="brand">🌍 Geo-Quiz <span id="subtitle">Flüsse der Welt</span></div>
+  <div class="stats" id="stats" hidden>
+    <span id="progress">1 / 20</span>
+    <span>✔ <b id="score">0</b></span>
+    <span id="goalinfo">Ziel 80 %</span>
+  </div>
+</header>
+
+<main>
+  <div id="map"></div>
+  <div id="toast"></div>
+
+  <section class="panel" id="start">
+    <h1 id="starttitle">Wie heißt dieser Fluss?</h1>
+    <p id="startdesc">Ein Fluss, See oder Meer wird auf der Karte rot markiert. Tippe den Namen ein – kleine Tippfehler sind erlaubt.</p>
+    <label>Spielmodus</label>
+    <div class="chips" id="modes"></div>
+    <label>Schwierigkeit</label>
+    <div class="chips" id="levels"></div>
+    <label>Zielquote</label>
+    <div class="chips" id="goals"></div>
+    <label>Thema</label>
+    <div class="chips" id="cats"></div>
+    <label>Region</label>
+    <div class="chips" id="regions"></div>
+    <label>Anzahl Fragen</label>
+    <div class="chips" id="counts"></div>
+    <button class="primary" id="go">Los geht's</button>
+    <p class="small"><span id="poolinfo"></span></p>
+  </section>
+
+  <section class="panel quiz" id="quiz" hidden>
+    <div class="q" id="qtext">Wie heißt der <b>rot markierte</b> Fluss?</div>
+    <form id="form" autocomplete="off">
+      <input id="answer" placeholder="Name …" spellcheck="false" autocapitalize="off" autocorrect="off" autocomplete="off" enterkeyhint="go">
+      <button class="primary" type="submit">OK</button>
+    </form>
+    <div class="row">
+      <button id="hint" type="button">💡 Tipp</button>
+      <button id="skip" type="button">Überspringen</button>
+    </div>
+    <div id="feedback" class="feedback"></div>
+  </section>
+
+  <section class="panel" id="result" hidden>
+    <h1 id="restitle">Geschafft!</h1>
+    <div class="big" id="respct"></div>
+    <p id="resdetail"></p>
+    <div id="mistakes"></div>
+    <button class="primary" id="again">Nochmal</button>
+    <button id="menu">Menü</button>
+  </section>
+</main>
+
+<script src="vendor/d3.min.js"></script>
+<script src="data/geo.js"></script>
+<script src="fuzzy.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
