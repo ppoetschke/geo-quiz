@@ -48,7 +48,7 @@ const ALL=G.categories.flatMap(c=>c.items.map(it=>Object.assign(it,{cat:c})));
 const FEM=["r-donau","r-elbe","r-oder","r-weichsel","r-wolga","r-loire","r-seine","r-rhone","r-themse","r-theiss","r-lena","r-dwina","r-petschora","r-kolyma","l-mueritz"];
 ALL.forEach(it=>{ if(FEM.includes(it.id)) it.article="die"; });
 // spellings used at school
-const XALT={"r-uruguay":["Pelotas"],"r-jangtse":["Jangtsekiang"],"r-huanghe":["Huang-He","Huangho"],"s-labrador":["Labrador"],"s-arktis":["Nordpolarmeer"]};
+const XALT={"r-uruguay":["Pelotas"],"r-jangtse":["Jangtsekiang"],"r-huanghe":["Huang-He","Huangho"],"s-labrador":["Labrador"],"s-arktis":["Nordpolarmeer"],"s-suedpolar":["Atlantisch-Indisches Südpolarbecken","Atlantisch-Indisches-Südpolarbecken"]};
 ALL.forEach(it=>{ (XALT[it.id]||[]).forEach(n=>{ if(!it.alts.includes(n)) it.alts.push(n); }); });
 // D3 expects clockwise outer rings; Natural Earth polygons may be counter-clockwise → reverse polygons whose area covers most of the sphere
 function fixWinding(geom){
