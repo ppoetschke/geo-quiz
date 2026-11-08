@@ -47,6 +47,9 @@ const ALL=G.categories.flatMap(c=>c.items.map(it=>Object.assign(it,{cat:c})));
 // German grammatical gender where it differs from the category default
 const FEM=["r-donau","r-elbe","r-oder","r-weichsel","r-wolga","r-loire","r-seine","r-rhone","r-themse","r-theiss","r-lena","r-dwina","r-petschora","r-kolyma","l-mueritz"];
 ALL.forEach(it=>{ if(FEM.includes(it.id)) it.article="die"; });
+// spellings used at school
+const XALT={"r-uruguay":["Pelotas"],"r-jangtse":["Jangtsekiang"],"r-huanghe":["Huang-He","Huangho"],"s-labrador":["Labrador"],"s-arktis":["Nordpolarmeer"]};
+ALL.forEach(it=>{ (XALT[it.id]||[]).forEach(n=>{ if(!it.alts.includes(n)) it.alts.push(n); }); });
 // D3 expects clockwise outer rings; Natural Earth polygons may be counter-clockwise → reverse polygons whose area covers most of the sphere
 function fixWinding(geom){
   if(geom.type!=="MultiPolygon") return;
@@ -103,7 +106,13 @@ function focus(r,ms=900){
 const $=id=>document.getElementById(id);
 const REGIONS=["Alle","Europa","Asien","Afrika","Amerika","Ozeanien"], COUNTS=[10,20,"Alle"];
 const CATS=[...G.categories.map(c=>c.label),"Gemischt"];
-const MODES=["Name eingeben","Auf Karte zeigen"], LEVELS=["Leicht","Schwierig"];
+const MODES=["Name eingeben","Auf Karte zeigen"], LEVELS=["Leicht","Schwierig","Schule"];
+// "Schule": exactly the waters from the school test sheet (Geo Test, Nov 2026)
+const SCHOOL=new Set(("r-yukon r-mackenzie r-colorado r-ohio r-mississippi r-amazonas r-uruguay r-rhein r-donau r-wolga r-ob r-jenissei r-lena "+
+ "r-amur r-huanghe r-jangtse r-mekong r-indus r-ganges r-darling r-niger r-nil r-kongo r-sambesi "+
+ "s-mexiko s-karibik s-hudson s-baffin s-labrador s-arktis s-barents s-kara s-schwarzes s-mittelmeer s-guinea s-rotes "+
+ "s-arabisch s-bengalen s-persisch s-suedchin s-japan s-ochotsk s-tasman s-suedpolar "+
+ "l-baikal l-balchasch l-aral l-kaspi l-ladoga l-victoria l-malawi l-tschad l-tanganjika l-huron l-michigan l-superior l-winnipeg l-sklaven").split(" "));
 // "Leicht": only the largest / best-known waters; "Schwierig": everything
 const EASY=new Set(("r-nil r-amazonas r-mississippi r-missouri r-jangtse r-huanghe r-kongo r-niger r-sambesi r-ganges r-indus r-mekong "+
  "r-wolga r-donau r-rhein r-elbe r-loire r-seine r-themse r-ob r-jenissei r-lena r-amur r-euphrat r-tigris r-parana r-orinoco "+
@@ -124,7 +133,7 @@ function chips(el,vals,get,set){
   el.innerHTML=""; vals.forEach(v=>{const b=document.createElement("button");b.textContent=v;b.className=get()===v?"on":"";
     b.onclick=()=>{set(v);chips(el,vals,get,set);info();};el.appendChild(b);});
 }
-function pool(){ return ALL.filter(r=>(level==="Schwierig"||EASY.has(r.id))&&(catLabel==="Gemischt"||r.cat.label===catLabel)&&(region==="Alle"||r.continent===region)); }
+function pool(){ return ALL.filter(r=>(level==="Schwierig"||(level==="Schule"?SCHOOL:EASY).has(r.id))&&(catLabel==="Gemischt"||r.cat.label===catLabel)&&(region==="Alle"||r.continent===region)); }
 function info(){ $("poolinfo").textContent=pool().length+" Fragen in dieser Auswahl";
   $("subtitle").textContent=catLabel==="Gemischt"?"Flüsse, Seen & Meere":catLabel+" der Welt";
   const c=G.categories.find(c=>c.label===catLabel);
